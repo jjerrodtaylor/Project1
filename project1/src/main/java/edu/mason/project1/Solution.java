@@ -16,6 +16,18 @@ public class Solution {
     {
         super();
     }
+    public static void displayInnerList(String name, GList<Integer> numberList)
+    {
+        System.out.println(name);
+        if(numberList.getFirstItem() != null)
+        {
+            System.out.println(numberList.getFirstItem());
+        }
+        while(numberList.hasNextItem() == true)
+        {
+            System.out.println(numberList.getNextItem());
+        }
+    }
 
     public static void main(String [ ] args)
     {
@@ -23,6 +35,7 @@ public class Solution {
         String addListAnswer = "n";
         String answer = "";
         boolean firstItem = true;
+        boolean finished = false;
 
         do
         {
@@ -44,7 +57,6 @@ public class Solution {
 
                 try
                 {
-
                     do
                     {
                         answer = "n";
@@ -84,7 +96,6 @@ public class Solution {
                             System.out.println("Please type y or n.");
                         }
                     }while(!answer.equalsIgnoreCase("n"));
-
                 }
                 catch(InputMismatchException ex)
                 {
@@ -100,32 +111,60 @@ public class Solution {
                 {
                     mainList.insertNext(newList);
                 }
-
             }
             else if(addListAnswer.toString().equalsIgnoreCase("N"))
             {
-                //display all of the lists created here.
-                if(mainList.isEmpty() == true)
+                do
                 {
-                    break;
-                }
-                else
-                {
-                    if(mainList.hasNextItem() == true)
+                    //display all of the lists created here.
+                    if(mainList.isEmpty() == true)
+                    {
+                        break;
+                    }
+                    else
                     {
                         if(firstItem == true)
                         {
+                            boolean firstPass = true;
                             System.out.println(mainList.getFirstItem().getName());
-                            while()
+                            if(mainList.getFirstItem().getInner().getFirstItem() != null)
+                            {
+                                System.out.println(mainList.getFirstItem().getInner().getFirstItem());
+                            }
+                            while(mainList.getFirstItem().getInner().hasNextItem() == true)
+                            {
+                                System.out.println(mainList.getFirstItem().getInner().getNextItem());
+                            }
+
+                            firstItem = false;
                         }
-                        System.out.println(mainList.getNextItem().getName());
-                        while(mainList.getNextItem().getInner().hasNextItem() == true)
+                        else
                         {
-                            System.out.println(mainList.getNextItem().getInner().getNextItem());
+                            boolean firstPass = true;
+                            System.out.println(mainList.getNextItem().getName());
+                            if(mainList.getNextItem().getInner().getFirstItem() != null)
+                            {
+                                System.out.println(mainList.getNextItem().getInner().getFirstItem());
+                            }
+                            while(mainList.getNextItem().getInner().hasNextItem() == true)
+                            {
+                                if(firstPass == true)
+                                {
+                                    System.out.println(mainList.getNextItem().getInner().getFirstItem());
+                                    firstPass = false;
+                                }
+                                else
+                                {
+                                    System.out.println(mainList.getNextItem().getInner().getNextItem());
+                                }
+                            }
+                            finished = true;
                         }
                     }
-                }
-            }
+                }while (finished==false);
+
+
+            }//end else
         }while(addListAnswer.equalsIgnoreCase("Y"));
     }
 }
