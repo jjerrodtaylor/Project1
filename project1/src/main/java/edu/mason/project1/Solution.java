@@ -4,11 +4,10 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * Created by IntelliJ IDEA.
- * User: jamaal.taylor
- * Date: 2/22/13
+ * Created by Jamaal J. Taylor
+ * Date: 2/28/13
  * Time: 11:26 PM
- * To change this template use File | Settings | File Templates.
+ * For class project 1
  */
 public class Solution {
 
@@ -16,6 +15,7 @@ public class Solution {
     {
         super();
     }
+    //A utility function that displays the contents of a GList<InnerList>
     public static void displayInnerList(String name, GList<Integer> numberList)
     {
         System.out.println(name);
@@ -31,19 +31,22 @@ public class Solution {
 
     public static void main(String [ ] args)
     {
+        //declare variable that are used through out the program
         GList<InnerList> mainList = new GList<InnerList>();
         String addListAnswer = "n";
         String answer = "";
-        boolean firstItem = true;
         boolean finished = false;
 
+        //enter main loop that asks user if they want to add a list
         do
         {
-            String myInput;
+            //declare and instantiate scanner to read in data
+            //Use text to prompt the user for input
             Scanner in = new Scanner(System.in);
             System.out.println("Add a list?:(y/n) ");
             addListAnswer = in.nextLine();
 
+            //condition that determines if user entered a yes
             if(addListAnswer.toString().equalsIgnoreCase("Y") || addListAnswer.toString().equalsIgnoreCase("y"))
             {
                 System.out.println("Name of list?");
@@ -55,9 +58,10 @@ public class Solution {
                 newList.setName(namedList.toString());
                 newList.setInner(numberList);
 
-                try
+
+                do
                 {
-                    do
+                    try
                     {
                         answer = "n";
                         Scanner scanner = new Scanner(System.in);
@@ -65,7 +69,11 @@ public class Solution {
                         //ask them if they want to add a number
                         System.out.println("add a number?(y/n)");
                         answer = scanner.nextLine();
+
+                        //make sure to reset the scanner each time or things won't work
                         in.reset();
+
+                        //check to make sure that the input is a string and either y or n.
                         if(answer instanceof String && answer.equalsIgnoreCase("Y"))
                         {
                             System.out.println("value:");
@@ -73,6 +81,7 @@ public class Solution {
                             in.reset();
                             if(inputAnswer instanceof Integer)
                             {
+                                //we decide whether we are inserting the first node or some node after first
                                 if(newList.getInner().isEmpty())
                                 {
                                     newList.getInner().insertFirst(inputAnswer);
@@ -84,6 +93,7 @@ public class Solution {
                             }
                             else
                             {
+                                //you should only enter here if a valid integer wasn't entered
                                 throw new InputMismatchException("You must enter a valid integer");
                             }
                         }
@@ -95,14 +105,14 @@ public class Solution {
                         {
                             System.out.println("Please type y or n.");
                         }
-                    }while(!answer.equalsIgnoreCase("n"));
-                }
-                catch(InputMismatchException ex)
-                {
-                    ex.printStackTrace();
-                }
-                //newList.getInner().insertFirst(numberList);
-                //newList.setInner(numberList);
+                    }
+                    catch (InputMismatchException ex)
+                    {
+                        //ex.printStackTrace();
+                        System.out.println("You must enter a valid number");
+                    }
+                }while(!answer.equalsIgnoreCase("n"));
+
                 if(mainList.isEmpty() == true)
                 {
                     mainList.insertFirst(newList);
@@ -112,59 +122,35 @@ public class Solution {
                     mainList.insertNext(newList);
                 }
             }
-            else if(addListAnswer.toString().equalsIgnoreCase("N"))
+            else if(addListAnswer.toString().equalsIgnoreCase("N"))//enter here when they don't want to add another list
             {
                 do
                 {
-                    //display all of the lists created here.
+                    //if the main list is empty you can exit the loop
                     if(mainList.isEmpty() == true)
                     {
                         break;
                     }
                     else
                     {
-                        if(firstItem == true)
-                        {
-                            boolean firstPass = true;
-                            System.out.println(mainList.getFirstItem().getName());
-                            if(mainList.getFirstItem().getInner().getFirstItem() != null)
-                            {
-                                System.out.println(mainList.getFirstItem().getInner().getFirstItem());
-                            }
-                            while(mainList.getFirstItem().getInner().hasNextItem() == true)
-                            {
-                                System.out.println(mainList.getFirstItem().getInner().getNextItem());
-                            }
+                        //display the first node
+                        Solution.displayInnerList(mainList.getFirstItem().getName(), mainList.getFirstItem().getInner());
 
-                            firstItem = false;
-                        }
-                        else
+                        //display the rest of the nodes
+                        while(mainList.hasNextItem() == true)
                         {
-                            boolean firstPass = true;
-                            System.out.println(mainList.getNextItem().getName());
-                            if(mainList.getNextItem().getInner().getFirstItem() != null)
-                            {
-                                System.out.println(mainList.getNextItem().getInner().getFirstItem());
-                            }
-                            while(mainList.getNextItem().getInner().hasNextItem() == true)
-                            {
-                                if(firstPass == true)
-                                {
-                                    System.out.println(mainList.getNextItem().getInner().getFirstItem());
-                                    firstPass = false;
-                                }
-                                else
-                                {
-                                    System.out.println(mainList.getNextItem().getInner().getNextItem());
-                                }
-                            }
-                            finished = true;
+                            Solution.displayInnerList(mainList.getNextItem().getName(), mainList.getNextItem().getInner());
                         }
+
+                        //signal that you are finished going through all of the nodes of mainlist
+                        finished = true;
                     }
                 }while (finished==false);
-
-
-            }//end else
+            }
+            else
+            {
+                System.out.println("Please type y or n.");
+            }
         }while(addListAnswer.equalsIgnoreCase("Y"));
     }
 }

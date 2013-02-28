@@ -78,7 +78,10 @@ public class GList<T> {
     //advances cursor one place in the list and returns the value stored at that node.
     public T getNextItem()
     {
-        cursor.next = cursor.next.next;
+        if(cursor.next.next != null)
+        {
+            cursor.next = cursor.next.next;
+        }
         return cursor.next.data;
     }
 
